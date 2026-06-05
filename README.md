@@ -14,5 +14,5 @@ Uma API REST simplificada para um banco digital com foco em transferências de f
 ### 1. Clonar o Repositório
 
 ```bash
-git clone <seu-repositorio>
+git clone https://github.com/renatosb/digital-bank-api
 cd digital-bank-api
