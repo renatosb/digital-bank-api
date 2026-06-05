@@ -1,8 +1,9 @@
 package com.digital.bank.api.repository;
 
-import com.digital.bank.api.entity.Account;
 import com.digital.bank.api.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 }

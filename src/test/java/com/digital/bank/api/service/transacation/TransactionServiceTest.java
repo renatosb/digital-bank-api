@@ -1,4 +1,4 @@
-package com.digital.bank.api.service;
+package com.digital.bank.api.service.transacation;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

@@ -22,7 +22,7 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    @GetMapping("/account/{number}")
+    @GetMapping("/{number}")
     @Operation(summary = "Get account by Account number UUID")
     public ResponseEntity<AccountDTO> getAccountByNumber(@PathVariable String number) {
         return ResponseEntity
