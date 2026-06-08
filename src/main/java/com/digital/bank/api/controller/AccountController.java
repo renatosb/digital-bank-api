@@ -2,8 +2,7 @@ package com.digital.bank.api.controller;
 
 import com.digital.bank.api.dto.AccountDTO;
 import com.digital.bank.api.dto.CreateAccountDTO;
-import com.digital.bank.api.dto.TransferAmountDTO;
-import com.digital.bank.api.entity.Account;
+import com.digital.bank.api.dto.TransactionDTO;
 import com.digital.bank.api.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,6 +27,14 @@ public class AccountController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(accountService.getAccountByAccountNumber(number));
+    }
+
+    @GetMapping("/{number}/transactions")
+    @Operation(summary = "Get account by Account number UUID")
+    public ResponseEntity<List<TransactionDTO>> getAccountTransactionsByNumber(@PathVariable String number) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.getTransactionsByAccountNumber(number));
     }
 
     @GetMapping

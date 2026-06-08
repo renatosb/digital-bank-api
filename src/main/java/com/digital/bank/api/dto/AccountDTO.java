@@ -21,4 +21,12 @@ public record AccountDTO(
 
         return account;
     }
+
+    public static AccountDTO toDTO(Account account){
+        return new AccountDTO(
+                account.getId(),
+                account.getClient(),
+                account.getAmount(),
+                account.getNumber());
+    }
 }

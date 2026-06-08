@@ -1,5 +1,6 @@
 package com.digital.bank.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,13 +20,13 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "source_account_id", nullable = false)
-    private Account sourceAccountId;
+    private Account sourceAccount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "destination_account_id", nullable = false)
-    private Account destinationAccountId;
+    private Account destinationAccount;
 
     @Column(nullable = false)
     private BigDecimal amount;

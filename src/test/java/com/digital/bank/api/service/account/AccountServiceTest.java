@@ -2,12 +2,16 @@ package com.digital.bank.api.service.account;
 
 import com.digital.bank.api.dto.AccountDTO;
 import com.digital.bank.api.dto.CreateAccountDTO;
+import com.digital.bank.api.dto.TransactionDTO;
 import com.digital.bank.api.dto.TransferAmountDTO;
 import com.digital.bank.api.entity.Account;
+import com.digital.bank.api.entity.Transaction;
 import com.digital.bank.api.exception.account.AccountNotFoundException;
 import com.digital.bank.api.generator.AccountGenerator;
+import com.digital.bank.api.generator.TransactionGenerator;
 import com.digital.bank.api.generator.dto.TransferAmountDTOGenerator;
 import com.digital.bank.api.repository.AccountRepository;
+import com.digital.bank.api.repository.TransactionRepository;
 import com.digital.bank.api.service.AccountService;
 import com.digital.bank.api.service.AccountValidationService;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,6 +38,9 @@ public class AccountServiceTest {
 
     @Mock
     private AccountValidationService accountValidationService;
+
+    @Mock
+    private TransactionRepository transactionRepository;
 
     @InjectMocks
     private AccountService accountService;
@@ -67,6 +75,35 @@ public class AccountServiceTest {
         );
 
         verify(accountRepository, times(1)).findByNumber(accountUUID);
+    }
+
+    @Test
+    @DisplayName("Should get all transactions by account number")
+    void getTransactionsByAccountNumber() {
+
+        List<Transaction> transactions = List.of(
+                TransactionGenerator.getTransaction(),
+                TransactionGenerator.getTransaction(),
+                TransactionGenerator.getTransaction()
+        );
+
+        when(accountRepository.findTransactionsByAccountNumber(any(UUID.class))).thenReturn(transactions);
+        List<TransactionDTO> result = accountService.getTransactionsByAccountNumber(UUID.randomUUID().toString());
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result.size(), transactions.size());
+        verify(accountRepository, times(1)).findTransactionsByAccountNumber(any(UUID.class));
+    }
+
+    @Test
+    @DisplayName("Should no transactions by account number")
+    void getTransactionsByAccountNumberWhenIsEmpty() {
+        when(accountRepository.findTransactionsByAccountNumber(any(UUID.class))).thenReturn(Collections.emptyList());
+        List<TransactionDTO> result = accountService.getTransactionsByAccountNumber(UUID.randomUUID().toString());
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(0, result.size());
+        verify(accountRepository, times(1)).findTransactionsByAccountNumber(any(UUID.class));
     }
 
     @Test

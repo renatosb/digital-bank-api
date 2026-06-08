@@ -2,11 +2,11 @@ package com.digital.bank.api.service;
 
 import com.digital.bank.api.dto.AccountDTO;
 import com.digital.bank.api.dto.CreateAccountDTO;
+import com.digital.bank.api.dto.TransactionDTO;
 import com.digital.bank.api.dto.TransferAmountDTO;
 import com.digital.bank.api.entity.Account;
 import com.digital.bank.api.exception.account.AccountNotFoundException;
 import com.digital.bank.api.repository.AccountRepository;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,18 +25,24 @@ public class AccountService {
 
     @Transactional(readOnly = true)
     public AccountDTO getAccountByAccountNumber(String accountNumber) {
-        return toDTO(accountRepository.findByNumber(UUID.fromString(accountNumber))
+        return AccountDTO.toDTO(accountRepository.findByNumber(UUID.fromString(accountNumber))
                 .orElseThrow(() -> new AccountNotFoundException(UUID.fromString(accountNumber))));
     }
 
     @Transactional(readOnly = true)
+    public List<TransactionDTO> getTransactionsByAccountNumber(String accountNumber) {
+        return accountRepository.findTransactionsByAccountNumber(UUID.fromString(accountNumber))
+                .stream().map(TransactionDTO::toDTO).toList();
+    }
+
+    @Transactional(readOnly = true)
     public List<AccountDTO> findAll() {
-        return accountRepository.findAll().stream().map(this::toDTO).toList();
+        return accountRepository.findAll().stream().map(AccountDTO::toDTO).toList();
     }
 
     @Transactional
     public AccountDTO createAccount(CreateAccountDTO createAccountDTO) {
-        return toDTO(accountRepository.save(createAccountDTO.toEntity()));
+        return AccountDTO.toDTO(accountRepository.save(createAccountDTO.toEntity()));
     }
 
     @Transactional
@@ -48,11 +54,11 @@ public class AccountService {
 
         log.info("Added amount to the account {}, new value: {}", account.getNumber(), added);
 
-        return toDTO(accountRepository.save(account));
+        return AccountDTO.toDTO(accountRepository.save(account));
     }
 
     @Transactional
-    public AccountDTO subtractFunds(TransferAmountDTO transferAmountDTO) {
+    public AccountDTO   subtractFunds(TransferAmountDTO transferAmountDTO) {
 
         accountValidationService.validateSubtract(transferAmountDTO);
 
@@ -62,15 +68,6 @@ public class AccountService {
 
         log.info("Subtracted amount to the account {}, new value: {}", account.getNumber(), subtracted);
 
-        return toDTO(accountRepository.save(account));
-    }
-
-    private AccountDTO toDTO(Account account) {
-        return new AccountDTO(
-                account.getId(),
-                account.getClient(),
-                account.getAmount(),
-                account.getNumber()
-        );
+        return AccountDTO.toDTO(accountRepository.save(account));
     }
 }

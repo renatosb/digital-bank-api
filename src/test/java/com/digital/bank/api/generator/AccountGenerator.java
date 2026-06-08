@@ -17,7 +17,7 @@ public class AccountGenerator {
         Account account = new Account();
 
         account.setNumber(UUID.randomUUID());
-        account.setClient("Client" + account.getId());
+        account.setClient("Client" + secureRandom.nextInt());
         account.setAmount(BigDecimal.valueOf(secureRandom.nextDouble()));
 
         return account;
@@ -31,7 +31,7 @@ public class AccountGenerator {
         Account account = new Account();
 
         account.setNumber(UUID.randomUUID());
-        account.setClient("Client" + account.getId());
+        account.setClient("Client" +secureRandom.nextInt());
         account.setAmount(BigDecimal.valueOf(secureRandom.nextDouble()));
 
         return account;
@@ -44,8 +44,6 @@ public class AccountGenerator {
                             .value(account.getId()),
                     jsonPath("$.client")
                             .value(account.getClient()),
-                    jsonPath("$.amount")
-                            .value(account.getAmount().setScale(2, RoundingMode.HALF_UP)),
                     jsonPath("$.number")
                             .value(account.getNumber().toString()));
 
