@@ -16,6 +16,7 @@ Uma API REST simplificada para um banco digital com foco em transferências de f
 - Teste unitário
 - Teste de Integração
 - Nofiticação via Log
+- Exception Handlers
 - Swagger
 
 ## Como Rodar o Projeto
