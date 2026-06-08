@@ -25,3 +25,17 @@ Uma API REST simplificada para um banco digital com foco em transferências de f
 ```bash
 git clone https://github.com/renatosb/digital-bank-api
 cd digital-bank-api
+```
+### 2. Rodando o projeto
+
+ - Com o Maven instalado(https://maven.apache.org/download.cgi)
+
+````bash
+# 1. Limpar e instalar dependências
+mvn clean install
+
+# 2. Executar a aplicação
+mvn spring-boot:run
+
+# 3. Abrir Swagger
+http://localhost:8080/swagger-ui.html
